@@ -5,6 +5,8 @@ const {
   editShoe,
   addColorway,
   removeColorway,
+  addLike,
+  deleteLike,
 } = require("../controllers/shoe-controller");
 
 router.get("/shoes", getShoe);
@@ -13,5 +15,8 @@ router.put("/shoes", editShoe);
 
 router.put("/shoes/colorWay", addColorway);
 router.delete("/shoes/colorWay", removeColorway);
+
+router.put("/shoes/like", addLike);
+router.delete("/shoes/like", deleteLike);
 
 module.exports = router;

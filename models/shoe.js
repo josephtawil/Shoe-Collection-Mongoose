@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const subSchema = new Schema(
+  {
+    likerId: { type: Schema.ObjectId },
+  },
+  { _id: false }
+);
+
 const shoeSchema = new Schema({
   brand: {
     type: String,
@@ -15,6 +22,14 @@ const shoeSchema = new Schema({
   },
 
   colorWay: [String],
+
+  likes: [subSchema],
+
+  authorId: {
+    type: Schema.ObjectId,
+    required: "Must pass userID",
+    ref: "User",
+  },
 });
 
 const Shoe = mongoose.model("Shoe", shoeSchema);
