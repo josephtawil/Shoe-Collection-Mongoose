@@ -51,4 +51,31 @@ module.exports = {
       res.send(err);
     }
   },
+
+  addLike: async (req,res) => {
+    try
+    {
+      const foundShoe = await Shoe.findById(req.body.shoeId);
+      foundShoe.likes.push(req.body.likerId);
+      await foundShoe.save();
+      res.send(foundShoe);
+    }
+    catch(err){
+      res.send(err);
+    }
+  },
+
+  deleteLike: async (req,res)=> {
+    try 
+    {
+        const updatedShoe = await Shoe.findById(req.body.shoeId);
+        const indexToDelete = updatedShoe.likes.indexOf(req.body.likerId);
+        updatedShoe.likes.splice(indexToDelete, 1);
+        await updatedShoe.save();
+        res.send(updatedShoe);
+    }
+     catch (err) {
+      res.send(err);
+    }
+  }
 };
