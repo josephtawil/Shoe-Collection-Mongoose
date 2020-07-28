@@ -6,6 +6,7 @@ module.exports = {
     Shoe.create({
       brand: req.body.brand,
       price: req.body.price,
+      authorId: req.body.authorId,
     })
       .then((result) => res.send(result))
       .catch((err) => res.send(err)),
@@ -15,6 +16,7 @@ module.exports = {
   getShoe: (req, res) => {
     !req.query.id
       ? Shoe.find({})
+          .populate("authorId", "email")
           .then((allShoes) => res.send(allShoes))
           .catch((err) => res.send(err))
       : Shoe.findById(req.query.id)
@@ -56,7 +58,7 @@ module.exports = {
     try
     {
       const foundShoe = await Shoe.findById(req.body.shoeId);
-      foundShoe.likes.push(req.body.likerId);
+      foundShoe.likes.push({likerId: req.body.likerId});
       await foundShoe.save();
       res.send(foundShoe);
     }

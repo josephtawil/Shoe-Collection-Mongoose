@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const Shoe = require("./shoe");
 const userSchema = new Schema({
     email: {
         type: String,
@@ -20,8 +20,28 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    
+});
 
+userSchema.post("remove", async (user)=>{
+    try 
+    {
+        await Shoe.deleteMany({authorId: user._id});
+        const matchingEntries = await Shoe.find({
+            likes: {likerId: user._id},            
+        });
+
+        matchingEntries.forEach(async (entry) =>{
+            const indexToDelete = entry.likes.indexOf(user._id);
+            
+            entry.likes.splice(indexToDelete, 1);
+            await entry.save();
+        
+        });
+
+       console.log("deleted");   
+    } catch (error) {
+        console.log("Error");
+    }
 });
 
 const User = mongoose.model("User", userSchema);

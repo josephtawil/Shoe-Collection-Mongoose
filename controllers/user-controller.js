@@ -12,9 +12,14 @@ module.exports = {
 
     // allow to add user
     addUser: (req,res) => {
-        User.create({ email: req.body.email, password: req.body.password}).then((user)=>res.send(user))
+        User.create({ email: req.body.email, password: req.body.password, authorId: req.body.authorId}).then((user)=>res.send(user))
         .catch((err)=>res.send(err));
     },
-    
 
+    deleteUser : (req, res) => {
+        User.findById(req.query.id).then((foundUser)=>{
+            foundUser.delete();
+            res.send("success")
+        }).catch((err)=>res.send(err));
+    }
 };
