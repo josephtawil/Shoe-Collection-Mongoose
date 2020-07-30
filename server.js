@@ -17,9 +17,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/shoes_db", {
 
 //connecting to shoes routes
 const shoeRoutes = require("./routes/shoe-routes");
-const userRoutes = require("./routes/user-routes");
-
-app.use(shoeRoutes, userRoutes);
+app.use(shoeRoutes);
 
 //connecting to user routes
 const userRoutes = require("./routes/user-routes");
