@@ -7,15 +7,18 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//connecting to mongodb database
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/shoes_db", {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useFindAndModify: false,
 });
 
+//connecting to shoes routes
 const shoeRoutes = require("./routes/shoe-routes");
 app.use(shoeRoutes);
 
+//connecting to user routes
 const userRoutes = require("./routes/user-routes");
 app.use(userRoutes);
 
