@@ -28,12 +28,17 @@ module.exports = {
   addColorway: async (req, res) => {
     try {
       const shoe = await Shoe.findById(req.query.id);
-      shoe.colorWay.push(req.query.colorWay);
+      shoe.colorWay.push( req.body.colorWay);
       await shoe.save();
       res.send(shoe);
     } catch (err) {
       res.send(err);
     }
+  },
+
+  addColorways : (req,res) => {
+    Shoe.findByIdAndUpdate(req.query.id, {$push: {colorWay: {$each: req.body.colorWay}}}).then((colorways) => {res.send(colorways)})
+    .catch((err) => res.send(err));
   },
 
   removeColorway: async (req, res) => {
