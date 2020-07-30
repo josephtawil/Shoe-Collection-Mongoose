@@ -3,11 +3,7 @@ const Shoe = require("../models/shoe");
 module.exports = {
   // creates a new shoe
   newShoe: async (req, res) =>
-    Shoe.create({
-      brand: req.body.brand,
-      price: req.body.price,
-      authorId: req.body.authorId,
-    })
+    Shoe.create(req.body)
       .then((result) => res.send(result))
       .catch((err) => res.send(err)),
 
@@ -16,7 +12,7 @@ module.exports = {
   getShoe: (req, res) => {
     !req.query.id
       ? Shoe.find({})
-          .populate("authorId", "email")
+          // .populate("authorId", "email password")
           .then((allShoes) => res.send(allShoes))
           .catch((err) => res.send(err))
       : Shoe.findById(req.query.id)
@@ -46,7 +42,7 @@ module.exports = {
       const indexToDelete = shoe.colorWay.indexOf(req.query.colorWay);
 
       shoe.colorWay.splice(indexToDelete, 1);
-      shoe.save();
+      await shoe.save();
 
       res.send(shoe);
     } catch (err) {
@@ -54,30 +50,29 @@ module.exports = {
     }
   },
 
-  addLike: async (req,res) => {
-    try
-    {
+  addLike: async (req, res) => {
+    try {
       const foundShoe = await Shoe.findById(req.body.shoeId);
-      foundShoe.likes.push({likerId: req.body.likerId});
+      foundShoe.likes.push({ likerId: req.body.likerId });
       await foundShoe.save();
       res.send(foundShoe);
-    }
-    catch(err){
-      res.send(err);
+    } catch (error) {
+      res.send(error);
     }
   },
 
-  deleteLike: async (req,res)=> {
-    try 
-    {
-        const updatedShoe = await Shoe.findById(req.body.shoeId);
-        const indexToDelete = updatedShoe.likes.indexOf(req.body.likerId);
-        updatedShoe.likes.splice(indexToDelete, 1);
-        await updatedShoe.save();
-        res.send(updatedShoe);
+  deleteLike: async (req, res) => {
+    try {
+      const foundShoe = await Shoe.findById(req.body.shoeId);
+      const indexToDelete = foundShoe.likes.indexOf(req.body.likerId);
+
+      foundShoe.likes.splice(indexToDelete, 1);
+
+      await foundShoe.save();
+
+      res.send(foundShoe);
+    } catch (error) {
+      res.send(error);
     }
-     catch (err) {
-      res.send(err);
-    }
-  }
+  },
 };

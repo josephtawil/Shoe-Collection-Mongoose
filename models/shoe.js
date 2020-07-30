@@ -1,17 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
-// creating a subschema that we are using to structure the likes array in the shoeschema. Its a way that we can create an object inside the likes array. Its another way. We could have just put it into the shoeSchema
 const subSchema = new Schema(
   {
-    likerId: 
-    {
-      type: Schema.ObjectId,
-    }
+    likerId: { type: Schema.ObjectId },
   },
-  {_id: false}
-  );
+  { _id: false }
+);
 
 const shoeSchema = new Schema({
   brand: {
@@ -32,9 +27,9 @@ const shoeSchema = new Schema({
 
   authorId: {
     type: Schema.ObjectId,
-    required: "Must pass user id",
+    required: "Must pass userID",
     ref: "User",
-   },
+  },
 });
 
 const Shoe = mongoose.model("Shoe", shoeSchema);

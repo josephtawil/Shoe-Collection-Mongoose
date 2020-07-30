@@ -11,9 +11,11 @@ const Shoe = require("./models/shoe");
       useCreateIndex: true,
     }
   );
+
   try {
     await User.collection.drop();
     await Shoe.collection.drop();
+
     console.log("reset");
   } catch {
     console.log("one or more of the collections were already empty");
@@ -26,5 +28,6 @@ const Shoe = require("./models/shoe");
   } catch (err) {
     console.log(err);
   }
+
   process.exit();
 })();
